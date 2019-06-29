@@ -70,3 +70,19 @@ a{
 	background: #ffffff;
 	color: #000000;
 }
+
+#topmatter div{
+   display: block;
+   max-width: 1000px;
+}
+
+#topmatter table tbody tr td{
+   padding: 20pt;
+}
+
+#midtextbox {
+   margin:10px;
+   /*width: 75%;*/
+   max-width: 1000px;
+   position: middle;
+}
