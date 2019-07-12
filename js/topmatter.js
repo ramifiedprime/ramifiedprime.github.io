@@ -6,10 +6,10 @@ document.write('\
   	<p><div id="mainmenu">\
    <ul id="mainmenulist">\
       <li><a href="index.html" id="index">Home</a></li>\
+      <li><a href="Notes.html" id="Notes">Notes</a></li>\
 <!--  <li><a href="Research.html" id="Research">Research</a></li>\
       <li><a href="Misc.html" id="Misc">Useful Links</a></li>\
       <li><a href="Teaching.html" id="Teaching">Teaching</a></li> -->\
-      <li><a href="Notes.html" id="Notes">Notes</a></li>\
    </ul>\
 </div></p>\
   </td>\
