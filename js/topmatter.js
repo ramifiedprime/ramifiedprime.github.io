@@ -16,7 +16,8 @@ document.write('\
   <td valign="middle" style="text-align:center">\
     <h1 id="topmatter">Ross Paterson</h1>\
     <div class="socialmediaicons">\
-    <img src="img/GitHub-Mark-120px-plus.png" alt="github" style="width:40px;height:40px;">\
+    <a href="https://github.com/ramifiedprime"><img src="img/GitHub-Mark-120px-plus.png" alt="github" style="width:40px;height:40px;"></a>\
+    <a href="https://twitter.com/ramifiedprime"><img src="img/Twitter_Social_Icon_Circle_Color.png" alt="github" style="width:40px;height:40px;"></a>\
     </div>\
     <p> <img src="img/Slug.jpg" alt="non snail-mail" style="width:250px;height:30px;"> </p>\
 	</td>\
