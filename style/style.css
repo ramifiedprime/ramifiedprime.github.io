@@ -58,12 +58,12 @@
 	background: #ffffff;
 }
 
-#topmatter img{
+#topmatterright img{
 	display:block;
-   	float:right;
-   	margin:0;
-   	padding:0;
-   	position:relative;
+   float:right;
+   margin:0;
+   padding:0;
+   position:relative;
 }
 
 a{
@@ -85,4 +85,10 @@ a{
    /*width: 75%;*/
    max-width: 1000px;
    position: middle;
+}
+
+.socialmediaicons {
+   display: table-cell;
+   vertical-align: middle;
+   text-align: middle;
 }

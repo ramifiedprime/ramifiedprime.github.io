@@ -7,14 +7,18 @@ document.write('\
    <ul id="mainmenulist">\
       <li><a href="index.html" id="index">Home</a></li>\
       <li><a href="Notes.html" id="Notes">Notes</a></li>\
-<!--  <li><a href="Research.html" id="Research">Research</a></li>\
       <li><a href="Misc.html" id="Misc">Useful Links</a></li>\
+<!--  <li><a href="Research.html" id="Research">Research</a></li>\
       <li><a href="Teaching.html" id="Teaching">Teaching</a></li> -->\
    </ul>\
 </div></p>\
   </td>\
-  <td valign="middle">\
+  <td valign="middle" style="text-align:center">\
     <h1 id="topmatter">Ross Paterson</h1>\
+    <div class="socialmediaicons">\
+    <img src="img/GitHub-Mark-120px-plus.png" alt="github" style="width:40px;height:40px;">\
+    </div>\
+    <p> <img src="img/Slug.jpg" alt="non snail-mail" style="width:250px;height:30px;"> </p>\
 	</td>\
   <td valign="top" halign="right">\
     <div style="text-align: right;"> </div>\
@@ -22,7 +26,8 @@ document.write('\
 	<img\
 	 title="Farey Diagram"\
 	 src="img/Farey.png"\
-	 width="200">\
+	 width="200"\
+   class="topmatterright">\
     </p>\
   </td></tr>\
 </tbody></table>\
