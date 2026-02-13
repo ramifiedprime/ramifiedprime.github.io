@@ -24,6 +24,20 @@
 <script type="text/javascript" async
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML">
 </script>
+
+<script type="text/javascript" src="https://aimath.org/knowl.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(document).on('click', 'a[knowl]', function() {
+        var that = this;
+        setTimeout(function() {
+            if (typeof MathJax !== 'undefined' && MathJax.Hub) {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $(that).next('.knowl-output')[0]]);
+            }
+        }, 200);
+    });
+});
+</script>
 </head>
 
 <body>
