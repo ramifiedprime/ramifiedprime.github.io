@@ -1,7 +1,7 @@
 \documentclass{lecturenotes}
 \usepackage{macros}
 \upsymbols{Tor,Isom,Div,Hom,Br,inv,WC,nr,red,GL,SL,Aut,tors,Hom,tame,wild}
-\upsymbols{Mat,Gal,res,im,coker,Frob,rk,kerl,Res,Ext,disc,Id,FS,cyc,stab,char,tr,End,GL,Jac,Map,small,medium}
+\upsymbols{Mat,Gal,res,im,coker,Frob,rk,Res,Ext,disc,Id,FS,cyc,stab,char,tr,End,GL,Jac,Map,small,medium}
 \bbsymbols{A,G,Z,Q,R,P,F,C,E}
 \scrsymbols{F,C,S,L,M}
 \calsymbols{O,T,F,G,C}
@@ -13,6 +13,8 @@
 \newcommand{\Art}{\operatorname{Art}}
 \newcommand{\bv}{\mathbf{v}}
 \newcommand{\bw}{\mathbf{w}}
+\newcommand{\kerl}{\ker_{l}}
+\newcommand{\kerr}{\ker_{r}}
 \coursename{Introduction to Smith's Methods}
 \lecturer{Peter Koymans}
 \notetaker{Ross Paterson}
@@ -166,7 +168,7 @@ The slogan here is that for $16$-ranks, the relationships between $h_{2p}^+$, $h
     }
 \end{proof}
 
-\begin{definition}
+\begin{definition}\label{def:Z1nr}
     Let $Z^1_\nr(G_\QQ, N(x)[2^k])=\inf\braces{Z^1(\gal(H_K/\QQ), N(x)[2^k])}$ for $K=\QQ(\sqrt{x})$.  Note that this unramified decoration really depends on $x$ in general!
 
     These are precisely the cocycles which restrict to $\Hom_\nr(G_K, N(x)[2^k])\cong \Cl_K^\vee[2^k]$,  i.e. those that restrict trivially to $\Hom(I_v, N(x)[2^k])$ for all places $v$ where $I_v$ is a choice of  inertia subgroup at $v$.
@@ -680,36 +682,77 @@ We will now make use of the large sieve and Siegel--Walfisz results to remove ca
 
 \lecture{}{}
 \section{Repeated Cauchy--Schwarz}
-Today we'll see a key new ingredient in this area:  repeated Cauchy--Schwarz.  Our setup is as follows.  Say we have three sets of primes
+Today we'll see a key new ingredient in this area:  repeated Cauchy--Schwarz.  
+\ross{Our goal for the remaining lectures will be to understand $4\Cl_K[8]$, assuming the structure of $2\Cl_K[4]$.  Here is a global sketch of the argument we are going to pursue a subcase of over the coming lectures.  We work on a good grid $X=X_1\times\dots\times X_r$.  For each $x\in X$, writing $K=\QQ(\sqrt{-x})$, we have already seen how to determine $2\Cl_K[4]$ via the R\'edei matrix $R_x$ which represents the pairing in the commutative diagram}
+\[\begin{tikzcd}[color=red]
+    \FF_2^r\times \FF_2^r\ar[r,"R_x"]\ar[d,"\varphi_x\times \psi_x"]&\set{\pm 1}\ar[d,equals]\\
+    \Cl_K[2]\times \Cl_K^\vee[2]\ar[r,"\Art_{x,1}"]&\set{\pm 1}.
+\end{tikzcd}\]
+\ross{
+Since we understand the distribution of $R_x$, we are emboldened to fix the value $R$ for the R\'edei matrix, which in turn by \Cref{thm:4torsRedeiKernel} fixes $\dim_{\FF_2}2\Cl_K[4]$.  This means we are restricting now to working with the subset 
+\[Y:=\set{x\in X~:~R_x=R}\subseteq X.\]
+A first, rather frustrating, observation is that this is \emph{not} a subgrid of $X$, so we will need to be able to average over this kind of arithmetically defined subset of a grid.  But let us continue.
+
+Having fixed $R$, lets take $V=\kerl(R)$ and $W=\kerr(R)$.  Then the pairing $\Art_{x,2}$ for $x\in Y$ extends naturally to a pairing between these two fixed (independent of $x\in Y$!) vector spaces
+}
+\[\begin{tikzcd}[color=red]
+    V\times W\ar[r,"\widetilde{\Art_{x,2}}"]\ar[d,"\varphi_x\times \psi_x"]&\set{\pm 1}\ar[d,equals]\\
+    2\Cl_K[4]\times 2\Cl_K^\vee[4]\ar[r,"\Art_{x,2}"]&\set{\pm 1}.
+\end{tikzcd}\]
+
+\ross{
+Where, as usual, $K=\QQ(\sqrt{-x})$.  Again, it is not hard to see that $4\Cl_K[8]$ is determined by the left kernel of $\widetilde{\Art_{x,2}}$, and again we have turned our problem into studying how a pairing varies randomly on the fixed space $V\times W$.  Our goal now is to prove that this pairing, more accurately the corresponding matrix, is uniformly random.
+
+
+% Let us work out a construction of the pairing.  By definition, $\widetilde{\Art_{x,2}}(\bv,\bw)$ is constructed by choosing an element $f_{x,\bw}\in \Cl_K^\vee[4]$ such that $2f_{x,\bw}=\psi_x(\bw)$ and then from this we have $\widetilde{\Art_{x,2}}(\bv,\bw)=f_{x,\bw}(\psi_x(\bv))$.  Via \Cref{thm:L1thm1} we can lift this choice of $f_{x,\bw}$ back to an element of $Z^1(\Gal(H_K/\QQ),N(-x)[4])$ which restricts to $f_{x,\bw}$ and then further via \Cref{def:Z1nr} we inflate to an element $\psi_{x,\bw}^4\in Z^1_{\nr}(G_\QQ, N(-x)[4])$.  In particular, $\psi_{x,\bw}^4$ is well defined on $\Gal(H_K/\QQ)$ and when restricted to $\Gal(H_K/K)\cong \Cl_K$ we have $2\psi_{x,\bw}^4=\psi_{x}(\bw)$.
+
+We want to reduce proving such a statement to understanding some kind of character sum as before.  Let $\bv_1,\dots,\bv_t$ and $\bw_1,\dots,\bw_t$ be bases for $V$ and $W$ respectively.  Then the matrix which defines $\widetilde{\Art_{x,2}}$ is $t\times t$ with entries $\widetilde{\Art_{x,2}}(\bv_i,\bw_j)$ as we saw before with the R\'edei matrix.  We want to see that this matrix takes any value with equal probability, how should we do this?  Firstly, we want to know that each entry of this matrix can be $\pm 1$ with equal probability.  Hence, for a fixed pair $\bv_i,\bw_j$, this would be equivalent to showing that
+\[\abs{\sum_{x\in Y}\widetilde{\Art_{x,2}}(\bv_i,\bw_j)}=o(\#Y)=o(H),\]
+since a saving is equivalent to the densities of $+1$ and $-1$ have the same leading term.  Then we need to check that there isn't some relation between pairs.  For example, perhaps two entries always have to be the same.  I this case, it's perfectly reasonable for one (and so both) of them to be $\pm 1$ with equal probability but the matrix will still not equidistribute.  To avoid such a correlation the values of the pairing on two pairs $(\bv_i,\bw_j)$ and $(\bv_k,\bw_\ell)$, we must similarly show that 
+\[\abs{\sum_{x\in Y}\widetilde{\Art_{x,2}}(\bv_{i},\bw_j)\widetilde{\Art_{x,2}}(\bv_k,\bw_{\ell})}=o(H).\]
+Continuing along this chain of reasoning (triple correlations and so on), we must show that for every choice of $\eta:[t]\times[t]\to \set{0,1}$except for the constant zero function, we get 
+\[\abs{\sum_{x\in Y}\prod_{i=1}^t\prod_{j=1}^t\widetilde{\Art_{x,2}}(\bv_{i},\bw_j)^{\eta(i,j)}}=o(H).\]
+Over the next few lectures we'll work out the details of a special case of this sketch, which illustrates the key points.
+}
+
+Our simplified setup for this and the next lecture is as follows: we have three sets of primes
 \begin{itemize}
     \item $X_1=\set{H<p<2H~:~p\equiv 3\mod 4}$
     \item $X_2=\set{2H<q<3H~:~q\equiv 1\mod 4}$
     \item $X_3=\set{3H<r<4H~:~r\equiv 1\mod 4}$ 
 \end{itemize}
-and as usual the product $X=X_1\times X_2\times X_3$.
+and as usual the product $X=X_1\times X_2\times X_3$.  Note that we've set these up in such a way that for every product $x=pqr$ from $X$, $-x$ is an imaginary quadratic discriminant.
 
-Recall for each $x=(p,q,r)\in X$ with associated quadratic field $K$ we already have the R\'edei matrix determining what comes from $4$-torsion
+For each $x=(p,q,r)\in X$, writing $K=\QQ(\sqrt{-x})$, we have already seen how to determine $2\Cl_K[4]$ via the R\'edei matrix $R_x$ which represents the pairing in the following commutative diagram.
 \[\begin{tikzcd}
     \FF_2^3\times \FF_2^3\ar[r,"R_x"]\ar[d,"\varphi_x\times \psi_x"]&\set{\pm 1}\ar[d,equals]\\
     \Cl_K[2]\times \Cl_K^\vee[2]\ar[r,"\Art_{x,1}"]&\set{\pm 1}.
 \end{tikzcd}\]
-Set
-\[Y:=\set{x=(p,q,r)~:~R_x=0},\]
-i.e. this is the set of triples such that $\art{p}{q}=\art{p}{r}=\art{q}{r}=+1$.  This is \emph{not} a subgrid.  Understanding the left kernel of $R_x$ told us precisely what $2\Cl_K[4]$ was.  We now want to understand what happens at this next layer and how we should compute $\widetilde{\Art_{x,2}}$.  At this layer, we have a diagram
 
+Our overall goal for the remaining lectures will be to understand $4\Cl_K[8]$, assuming the structure of $2\Cl_K[4]$ or, more accurately, assuming the slightly finer data of a fixed R\'edei matrix $R_x$.  Let us first discuss the maximal case where $R_x=0$, so that via \Cref{thm:4torsRedeiKernel} we have
+\[\Cl_K[4]\cong (\ZZ/4\ZZ)^2\]
+Then the set of $x\in X$ we are restricting our consideration to is
+\[Y:=\set{x\in X~:~R_x=0}.\]
+Taking the explicit description of the R\'edei matrix from \Cref{eq:RedeiRevamp}, this can be re-expressed as
+\[Y=\set{(p,q,r)\in X~:~\art{p}{q}=\art{p}{r}=\art{q}{r}=+1}.\]
+A first, rather frustrating, observation is that this is \emph{not} a subgrid of $X$, so we will need to be able to average over this kind of arithmetically defined subset of a grid.
+
+Looking on to the $8$-torsion, we now want to understand the pairing $\Art_{x,2}$.  Having fixed $R_x$, we will lift $\Art_{x,2}$ to a pairing $\widetilde{\Art_{x,2}}$ which is defined on the fixed (i.e. independent of $x$) subspace $\kerl(R_x)\times \kerr(R_x)$, and again have a problem of a pairing which varies randomly on a fixed vector space.  Then we aim to prove that this pairing, more accurately the corresponding matrix, varies uniformly among all possible pairings.
+
+Since we have restricted to the case $R_x=0$, the left and right kernels are the total space and so we have
 \[\begin{tikzcd}
-    \varphi_x^{-1}(2\Cl_K[4])\times \psi_x^{-1}(2\Cl^\vee_K[4])\ar[r,"\widetilde{\Art_{x,2}}"]\ar[d,"\varphi_x\times \psi_x"]&\set{\pm 1}\ar[d,equals]\\
-    2\Cl_K[4]\times 2\Cl_K^\vee[4]\ar[r,"\Art_{x,1}"]&\set{\pm 1}.
+    \FF_2^3\times \FF_2^3\ar[r,"\widetilde{\Art_{x,2}}"]\ar[d,"\varphi_x\times \psi_x"]&\set{\pm 1}\ar[d,equals]\\
+    2\Cl_K[4]\times 2\Cl_K^\vee[4]\ar[r,"\Art_{x,2}"]&\set{\pm 1}.
 \end{tikzcd}\]
-Here, by definition, $\widetilde{\Art_{x,2}}(\bv,\bw)=\psi_x^4(\bw)(\Frob_{\varphi_x(\bv)})$, where $\psi_x^4(\bw)\in Z^1_{\nr}(G_\QQ, N(-x)[4])$ satisfies $2\psi_x^4(\bw)=\psi_x(\bw)$.
+Let us work out a construction of the pairing.  By definition, $\widetilde{\Art_{x,2}}(\bv,\bw)$ is constructed by choosing an element $f_{x,\bw}\in \Cl_K^\vee[4]$ such that $2f_{x,\bw}=\psi_x(\bw)$ and then from this we have $\widetilde{\Art_{x,2}}(\bv,\bw)=f_{x,\bw}(\psi_x(\bv))$.  Via \Cref{thm:L1thm1} we can lift this choice of $f_{x,\bw}$ back to an element of $Z^1(\Gal(H_K/\QQ),N(-x)[4])$ which restricts to $f_{x,\bw}$ and then further via \Cref{def:Z1nr} we inflate to an element $\psi_{x}^4(\bw)\in Z^1_{\nr}(G_\QQ, N(-x)[4])$.  In particular, $\psi_{x}^4(\bw)$ is well defined on $\Gal(H_K/\QQ)$ and when restricted to $\Gal(H_K/K)\cong \Cl_K$ we have $2\psi_{x}^4(\bw)=\psi_{x}(\bw)$.\ross{One day I will come back and change $\psi_{x}^4(\bw)$ to $\psi_{x,\bw}^4$ which seems slightly tidier, but that day has not yet come.}
 
-Our goal today is to discuss the following claim:
-\begin{proposition}
+Our goal over the next few lectures is to discuss the following claim:
+\begin{theorem}
 \[\abs{\sum_{x\in Y}\widetilde{\Art_{x,2}(\bv,\bw)}}=o(H^3/\log(H)^3).\] 
-\end{proposition}
-Actually it is possible to reach $o(H^{3-\delta})$, but we'll not work that hard.
+\end{theorem}
+Actually it is possible to reach $o(H^{3-\delta})$, but we'll not work that hard.  Why do we want to do this?  Obtaining a saving here ensures that the leading terms for the number of $x$ with value $+1$ must be the same as the leading term for those with value $-1$.
 
-\noindent \textbf{Important: Today we will specialise to the setting $\bv=(1,0,0)$ and $\bw=(0,1,0)$!!}
+\noindent \textbf{Important: During this and next lecture we will specialise to the setting $\bv=(1,0,0)$ and $\bw=(0,1,0)$!}
 
 Now,
 \[\widetilde{\Art_{x,2}}(\bv,\bw)=\psi_x^4(\bw)(\Frob_\fr)\]
