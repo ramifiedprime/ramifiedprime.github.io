@@ -1,0 +1,180 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesPackage{macros}
+
+\usepackage{amsmath,amsthm,amssymb,bbm,mathrsfs}
+% \usepackage{todonotes}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage[pdfencoding=auto,hidelinks,backref]{hyperref}
+\usepackage{cleveref}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usepackage[alphabetic,initials,msc-links,backrefs]{amsrefs}
+\usepackage[OT2,T1]{fontenc}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{etoolbox}
+\usepackage{ifthen}
+\usetikzlibrary{arrows.meta}
+\usepackage{xparse} %needed for newfunction
+
+\newcommand{\@isshort}{no}
+\DeclareOption{short}{
+    \renewcommand{\@isshort}{yes}
+}
+\ProcessOptions
+
+
+
+% SYMBOL DEFINING COMMANDS
+
+\newcommand{\@NewSymbol}[3]{%
+    \expandafter\def\csname#1\endcsname{\csname#2\endcsname{#3}}%
+}%
+\newcommand{\newsymbolscommand}[3]{%
+    \expandafter\def\csname #1\endcsname{%
+        \def\@CreateMyCommand####1{%
+            \@NewSymbol{#2####1}{#3}{####1}%
+        }%
+        \forcsvlist{\@CreateMyCommand}%
+    }%
+}%
+\newsymbolscommand{ovsymbols}{ov}{overline}%
+\newsymbolscommand{calsymbols}{c}{mathcal}%
+\newsymbolscommand{upsymbols}{}{textup}%
+\newsymbolscommand{operatorsymbols}{}{MathOperator}%
+\newsymbolscommand{fraksymbols}{f}{mathfrak}%
+\newsymbolscommand{scrsymbols}{s}{mathscr}
+\newsymbolscommand{boldsymbols}{b}{mathbf}
+\newcommand{\bbsymbols}{%
+    \def\@CreateMyCommand##1{%
+        \@NewSymbol{##1##1}{mathbb}{##1}%
+    }%
+    \forcsvlist{\@CreateMyCommand}%
+}%
+
+
+
+% Some common ones
+\bbsymbols{G,E,R,C,Q,F,Z,T}
+\fraksymbols{p,P,R,q}
+\scrsymbols{S,F,C,L,P}
+\calsymbols{S,F,C,L,P,O,T}
+\upsymbols{Tor,Isom,Div,Hom,Br,inv,WC,nr,red,GL,SL,Aut,tors,Hom,Mod}
+\upsymbols{Gal,res,im,coker,Frob,rk,Res,Ext,disc,Id,FS,cyc,Cl}
+\newcommand{\gal}{\Gal}
+
+% introducing nobreakhline to not allow pagebreaks in longtable https://tex.stackexchange.com/questions/6350/how-to-disable-pagebreak-on-hline-in-longtable
+
+\def\nobreakhline{%
+  \noalign{\ifnum0=`}\fi
+    \penalty\@M
+    \futurelet\@let@token\LT@@nobreakhline}
+\def\LT@@nobreakhline{%
+  \ifx\@let@token\hline
+    \global\let\@gtempa\@gobble
+    \gdef\LT@sep{\penalty\@M\vskip\doublerulesep}% <-- change here
+  \else
+    \global\let\@gtempa\@empty
+    \gdef\LT@sep{\penalty\@M\vskip-\arrayrulewidth}% <-- change here
+  \fi
+  \ifnum0=`{\fi}%
+  \multispan\LT@cols
+     \unskip\leaders\hrule\@height\arrayrulewidth\hfill\cr
+  \noalign{\LT@sep}%
+  \multispan\LT@cols
+     \unskip\leaders\hrule\@height\arrayrulewidth\hfill\cr
+  \noalign{\penalty\@M}%
+  \@gtempa}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ExplSyntaxOn
+\NewDocumentCommand { \giveme } { m m }
+{
+    \clist_item:nn { #1 } { #2 }
+}
+\ExplSyntaxOff
+
+\newcommand{\newfunction}[3][(,)]{%
+    \expandafter\def\csname#2\endcsname##1{#3\expandafter\left\giveme{#1}{1}##1\expandafter\right\giveme{#1}{2}}%
+}%
+
+% STANDARD FUNCTIONS
+\newfunction[|,|]{abs}{}
+\newfunction[\{,\}]{set}{}
+\newfunction[(,)]{braces}{}
+\newfunction[\langle,\rangle]{gp}{}
+\newfunction{bigo}{O}
+\newfunction[\lfloor,\rfloor]{floor}{}
+\newfunction[\lceil,\rceil]{ceil}{}
+
+% Resizing
+\newcommand{\art}[2]{\braces{\frac{#1}{#2}}}
+\renewcommand{\hat}[1]{\widehat{#1}}
+\renewcommand{\bar}[1]{\overline{#1}}
+
+
+% Useful Notation
+\newcommand{\places}{\Omega}
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\Epsilon}{\mathcal{E}}
+\DeclareSymbolFont{cyrletters}{OT2}{wncyr}{m}{n}
+\DeclareMathSymbol{\Sha}{\mathalpha}{cyrletters}{"58}
+\newcommand{\subsetsim}{\mathrel{\ooalign{\raise0.2ex\hbox{$\subset$}\cr\hidewidth\raise-0.8ex\hbox{\scalebox{0.9}{$\sim$}}\hidewidth\cr}}}
+%Redefiners
+\renewcommand{\hom}{\Hom}
+\renewcommand{\div}{\Div}
+
+% Practical Nonsense
+\newcommand{\idx}[1]{\textit{#1}}
+\newcommand{\dolater}[1]{{\color{red}#1}}
+
+
+% Theorem styles
+\theoremstyle{plain}
+\ifthenelse{\equal{\@isshort}{yes}}{
+    \newtheorem{theorem}{Theorem}
+}{
+    \newtheorem{theorem}{Theorem}[section]
+}
+    
+
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conj}[theorem]{Conjecture}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{ques}[theorem]{Question}
+\newtheorem{ans}[theorem]{Answer}
+\newtheorem{heur}[theorem]{Heuristic}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\newtheorem*{ques*}{Question}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{rem}[theorem]{Remark}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem*{ans*}{Answer}
+
+% Cref fixes
+\crefname{section}{\S\!\!}{\S\!\!}
+\Crefname{section}{\S\!\!}{\S\!\!}
+\Crefname{appendix}{Appendix \!\!}{Appendix \!\!}
+
+\creflabelformat{equation}{(#2#1#3)}
+\Crefname{equation}{}{}
+\crefname{equation}{}{}
+
+\Crefname{enumii}{}{}
+\crefname{enumi}{}{}
+
+\makeatother
