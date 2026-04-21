@@ -54,12 +54,12 @@ jobs:
         run: |
           BEFORE="${{ github.event.before }}"
           if git rev-parse "$BEFORE" >/dev/null 2>&1; then
-              grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$' | while read -r f; do
-              git diff --name-only --diff-filter=D "$BEFORE" HEAD -- "$f" | while read -r deleted; do
-                pdf="${deleted%.tex}.pdf"
+            git show "$BEFORE":.github/tex-sources.txt | grep -v '^\s*#' | grep -v '^\s*$' | while read -r f; do
+              if [ ! -f "$f" ]; then
+                pdf="${f%.tex}.pdf"
                 echo "Removing $pdf"
                 rm -f "$pdf"
-              done
+              fi
             done
           fi
 
