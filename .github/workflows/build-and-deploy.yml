@@ -2,7 +2,7 @@ name: Build LaTeX and Deploy to Pages
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
 
 permissions:
