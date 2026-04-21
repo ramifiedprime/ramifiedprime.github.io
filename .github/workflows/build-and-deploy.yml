@@ -39,6 +39,23 @@ jobs:
           work_in_root_file_dir: true
           continue_on_error: true
 
+      - name: Clean up auxiliary and tex files
+        run: |
+          grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$' | while read -r f; do
+            base="${f%.tex}"
+            rm -f "$base.aux" \
+                  "$base.log" \
+                  "$base.out" \
+                  "$base.toc" \
+                  "$base.fls" \
+                  "$base.blg" \
+                  "$base.bbl" \
+                  "$base.brf" \
+                  "$base.fdb_latexmk" \
+                  "$base.synctex.gz" \
+                  "$base.tex"
+          done
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
