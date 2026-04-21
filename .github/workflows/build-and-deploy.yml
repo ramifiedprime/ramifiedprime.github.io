@@ -2,7 +2,7 @@ name: Build LaTeX and Deploy to Pages
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -23,51 +23,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Restore PDF cache
-        uses: actions/cache@v4
-        with:
-          path: "**/*.pdf"
-          key: latex-pdfs-${{ github.sha }}
-          restore-keys: |
-            latex-pdfs-
-
-      - name: Find changed .tex files
-        id: changed
+      - name: Find .tex files to compile
+        id: sources
         run: |
-          BEFORE="${{ github.event.before }}"
-          SOURCES=$(grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$')
-          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || ! git rev-parse "$BEFORE" >/dev/null 2>&1; then
-            FILES="$SOURCES"
-          else
-            FILES=$(echo "$SOURCES" | while read -r f; do
-              git diff --name-only --diff-filter=d "$BEFORE" HEAD -- "$f"
-            done)
-          fi
+          FILES=$(grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$')
           echo "files<<EOF" >> $GITHUB_OUTPUT
           echo "$FILES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Remove PDFs for deleted .tex files
-        run: |
-          BEFORE="${{ github.event.before }}"
-          if git rev-parse "$BEFORE" >/dev/null 2>&1; then
-            git show "$BEFORE":.github/tex-sources.txt | grep -v '^\s*#' | grep -v '^\s*$' | while read -r f; do
-              if [ ! -f "$f" ]; then
-                pdf="${f%.tex}.pdf"
-                echo "Removing $pdf"
-                rm -f "$pdf"
-              fi
-            done
-          fi
-
-      - name: Compile changed LaTeX documents
-        if: steps.changed.outputs.files != ''
+      - name: Compile LaTeX documents
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: ${{ steps.changed.outputs.files }}
+          root_file: ${{ steps.sources.outputs.files }}
           work_in_root_file_dir: true
 
       - name: Upload Pages artifact
