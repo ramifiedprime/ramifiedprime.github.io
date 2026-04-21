@@ -68,9 +68,7 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           root_file: ${{ steps.changed.outputs.files }}
-          glob_root_file: false
           work_in_root_file_dir: true
-          latexmk_use_pdflatex: true
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
