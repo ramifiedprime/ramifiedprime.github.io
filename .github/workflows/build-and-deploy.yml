@@ -38,10 +38,13 @@ jobs:
         id: changed
         run: |
           BEFORE="${{ github.event.before }}"
+          SOURCES=$(grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$')
           if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || ! git rev-parse "$BEFORE" >/dev/null 2>&1; then
-            FILES=$(find . -name "*.tex" | sed 's|^\./||')
+            FILES="$SOURCES"
           else
-            FILES=$(git diff --name-only --diff-filter=d "$BEFORE" HEAD -- '*.tex')
+            FILES=$(echo "$SOURCES" | while read -r f; do
+              git diff --name-only --diff-filter=d "$BEFORE" HEAD -- "$f"
+            done)
           fi
           echo "files<<EOF" >> $GITHUB_OUTPUT
           echo "$FILES" >> $GITHUB_OUTPUT
@@ -51,10 +54,12 @@ jobs:
         run: |
           BEFORE="${{ github.event.before }}"
           if git rev-parse "$BEFORE" >/dev/null 2>&1; then
-            git diff --name-only --diff-filter=D "$BEFORE" HEAD -- '*.tex' | while read -r f; do
-              pdf="${f%.tex}.pdf"
-              echo "Removing $pdf"
-              rm -f "$pdf"
+              grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$' | while read -r f; do
+              git diff --name-only --diff-filter=D "$BEFORE" HEAD -- "$f" | while read -r deleted; do
+                pdf="${deleted%.tex}.pdf"
+                echo "Removing $pdf"
+                rm -f "$pdf"
+              done
             done
           fi
 
