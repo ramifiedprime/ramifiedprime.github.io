@@ -768,7 +768,7 @@ We note the following repeated application of Cauchy--Schwarz from excercise she
 
 This will be a key ingredient in proving the following main theorem.
 
-\begin{theorem}
+\begin{theorem}\label{thm:1}
     Let $p_1,p_2\in X_1$, $q_1,q_2\in X_2$, $r\in X_3$.  Assume that $p_iq_jr\in Y$.  Then setting $C:=\set{p_1,p_2}\times \set{q_1,q_2}\times \set{r}$, we obtain that
     \[\sum_{x\in C}\psi_x^4(\bw)\in \Map(G_\QQ,N[2]).\]
     Moreover, let $d:\Map(G_\QQ, N)\to \Map(G_\QQ^2,N)$ be the differential on the chain complexes which define Galois cohomology, we have
@@ -864,9 +864,91 @@ which which will be a sum of a quadratic character over $\QQ(\sqrt{p_1p_2})$.
 Continuing in our special case, we now want to prove \Cref{thm:cubesum}.
 
 \begin{proof}[Proof of \Cref{thm:cubesum}]
-    
+    Recall from \Cref{thm:1} that 
+    \[d\braces{\sum_{x\in C}\psi_{x}^4(\bw)}(\sigma,\tau)=\chi_{p_1p_2}(\sigma)\chi_{q_1q_2}(\tau)\]
+    where here $\psi_{x}^4(\bw)\in Z^1_{\nr}(G_\QQ,N(-x)[4])$ is the element which factors through the Hilbert class field and restricts to $\Cl_K\cong \Gal(H_K/K)$ to satisfy $2\psi_{x}^4(\bw)=\psi_x(\bw)$.  And we have also constructed our element which differentiates to the same thing
+    \[d\phi_{p_1p_2,q_1q_2}^\nr = \chi_{p_1p_2}\cup \chi_{q_1q_2}.\]
+    Recall that 
+    \[\widetilde{\Art_{x,2}}(\bv,\bw)=(-1)^{\psi_x^4(\bw)(\Frob_\fr)}\]
+    where $\fr\mid r$ in $K=\QQ(\sqrt{-x})$ with $x=(p_i,q_j,r)\in C$.  The prime $\fr$ splits completely in $K(\sqrt{p_1p_2},\sqrt{q_1q_2})/K$, and choosing a prime $\fr'$ above $\fr$ in this larger field we have
+    \[\widetilde{\Art_{x,2}}(\bv,\bw)=(-1)^{\psi_x^4(\bw)(\Frob_{\fr'})}\]
+    On this larger field, each $\psi_x^4(\bw)$ is a homomorphism because we obtain trivial Galois action here, so we can then compute
+    \begin{align*}
+    \prod_{x\in C}\widetilde{\Art_{x,2}}(\bv,\bw)
+    &=(-1)^{\sum_{x\in C}\psi_{x}^4(\bw)(\Frob_{\fr'})}
+    \\&=(-1)^{\braces{\sum_{x\in C}\psi_{x}^4(\bw)}(\Frob_{\fr'})}
+    \\&=(-1)^{\phi_{p_1p_2,q_1q_2}^\nr(\Frob_{\fr'})+\chi(\Frob_{\fr'})}
+    \end{align*}
+    for some character $\chi:G_\QQ\to \FF_2$ we discussed above, since 
+    \[\sum_{x\in C}\psi_x^4(\bw)-\phi_{p_1p_2,q_1q_2}^\nr\in \ker(d)=\Hom(G_\QQ,\FF_2).\]
+    What can we say about this character $\chi$?  Well, since we've made our $\phi_{p_1p_2,q_1q_2}^\nr$ unramified\ross{why is the sum unramified away from here?}, this character $\chi$ can only ramify at $p_1,p_2,q_1,q_2,r$.  But $\fr'$ splits for all such quadratic characters since $\bv=(0,0,1)$ is in the left kernel of $R_x$ for all $x\in C$, and finally
+    \[\phi_{p_1p_2,q_1q_2}^\nr(\Frob_\fr)=\phi_{p_1p_2,q_1q_2}^\nr(\Frob_{\fr'})\]
 \end{proof}
+\lecture{}{To infinity and beyond}
+We need a version of \Cref{thm:cubesum} for $16$-rank and further.  Let 
+\[C=\set{p_1,p_2}\times\set{q_1,q_2}\times \set{r_1,r_2}\times \set{d}\]
+and suppose that $\psi_x(\bw)\in 4\Cl_{\QQ(\sqrt{-x})}^\vee[8]$ for all $x\in C$.  Fix lifts $\psi_x^8(\bw)\in Z^1_\nr(G_\QQ, N(-x)[8])$ for all $x\in C$ (i.e. elements such that $4\psi_x^8(\bw)=\psi_x(\bw)$).
 
 
+For $T\subseteq \set{1,2,3}$, write $C_T$ for the subcube where we fix the $i$th entry of the tripe to be option $2$ for all $i\in T$.  For example, $C_{\set{1,3}}=\set{p_2}\times \set{q_1,q_2}\times \set{r_2}\times \set{d}$.
+\begin{theorem}\label{thm:highersums}
+Assume that for all $T\subseteq \set{1,2,3}$
+\[\sum_{x\in C_T}2^{\abs{T}}\psi_x^8(\bw)\in \Map(G_\QQ,N[2]).\]  
+Then with $x_0=p_1q_1r_1d$, the function $d_{\chi_0}\braces{\sum_{x\in C\backslash\set{x_0}}\psi_x^8(\bw)}$ maps a pair $(\sigma,\tau)$ to
+\begin{align*}
+    &\chi_{p_1p_2}(\sigma)\braces{\sum_{x\in C_1}2\psi_x^8(\bw)(\tau)}
+    +\chi_{q_1q_2}(\sigma)\braces{\sum_{x\in C_2}2\psi_x^8(\bw)(\tau)}
+    +\chi_{r_1r_2}(\sigma)\braces{\sum_{x\in C_3}2\psi_x^8(\bw)(\tau)}
+    \\&\quad+\chi_{p_1p_2}(\sigma)\chi_{q_1q_2}(\sigma)\braces{\sum_{x\in C_{\set{1,2}}}4\psi_x^8(\bw)(\tau)}
+    +\chi_{p_1p_2}(\sigma)\chi_{r_1r_2}(\sigma)\braces{\sum_{x\in C_{\set{1,3}}}4\psi_x^8(\bw)(\tau)}
+    \\&\quad+\chi_{q_1q_2}(\sigma)\chi_{r_1r_2}(\sigma)\braces{\sum_{x\in C_{\set{2,3}}}4\psi_x^8(\bw)(\tau)}
+\end{align*}
+\end{theorem}
+\begin{proof}
+    See exercise sheet 4.
+\end{proof}
+Why do we want this?  Well we want to say things like if you give me $\psi_x^8(\bw)$ for all $x\in C\backslash\set{x_0}$ then I can define 
+\[\psi_{x_0}^8(\bw)=-\sum_{x\in C\backslash\set{x_0}}\psi_x^8(\bw)+\textnormal{ [acceptable correction factors]}\]
+\begin{corollary}\label{cor:1}
+    Assume that $\sum_{x\in C_T}2^{\abs{T}}\psi_x^8(\bw)=0$ for all nonempty $T$.  Then 
+    \[d_{x_0}\braces{\sum_{x\in X\backslash\set{x_0}}\psi_x^8(\bw)}=0\]
+    and hence $\sum_{x\in X\backslash\set{x_0}}\psi_x^8(\bw)\in Z^1(G_\QQ,N(-x)[8])$ and $4\sum_{x\in X\backslash\set{x_0}}\psi_x^8(\bw)=\psi_x(\bw)$.
+\end{corollary}
+\begin{proof}
+    Immediate from theorem.
+\end{proof}
+This will give us that the product of the Artin pairing around $C$ is exactly $1$.  Take $\bw=(0,0,1,*)$, we want to find a simple function $\phi$ which also differentiates to the large equation in \Cref{thm:highersums}, so that then this easier function is equal to the sum of our $\psi_x^8(\bw)$ (up to an acceptable error: the quadratic characters which make up the kernel of the differential).  Thinking about the individual terms in this large expression, we can replace $2\psi_x^8(\bw)$ with $\psi_x^4(\bw)$
+\begin{enumerate}
+    \item $\chi_{p_1p_2}(\sigma)\braces{\sum_{x\in C_1}2\psi_x^8(\bw)}=\chi_{p_1p_2}(\sigma)\braces{\sum_{x\in C_1}\psi_x^4(\bw)}$ is known from the previous layer to be able to be replaced by $\chi_{p_1p_2}(\sigma)\phi_{q_1q_2,r_1r_2}^\nr(\tau)$.
+    \item Similarly, $\chi_{q_1q_2}(\sigma)\braces{\sum_{x\in C_2}2\psi_x^8(\bw)}=\chi_{q_1q_2}(\sigma)\braces{\sum_{x\in C_2}\psi_x^4(\bw)}$ is known from the previous layer to be able to be replaced by $\chi_{q_1q_2}(\sigma)\phi_{p_1p_2,r_1r_2}^\nr(\tau)$.
+    \item Things now change at the third term: $\chi_{r_1r_2}(\sigma)\braces{\sum_{x\in C_3}\psi_x^4(\bw)}$ has the property that $d\braces{\sum_{x\in C_x}\psi_x^4(\bw)}=0$ by \Cref{cor:1}.  Indeed
+    \begin{align*}
+        d\psi_x^4(\sigma,\tau)&=\chi_{-x}(\sigma)\psi_x^4(\bw)(\tau)-\psi_x^4(\bw)(\tau)
+        \\&=\begin{cases}
+            0&\textnormal{if }\chi_{-x}(\sigma)=+1\\
+            \psi_x(\bw)(\tau)=\chi_{r_2}(\tau)&\textnormal{if }\chi_{-x}(\sigma)=-1
+        \end{cases}
+    \end{align*}
+    but since we are summing around a cube where $r=r_2$ is fixed, we have an even multiple of $\chi_2(\tau)$ or zero, hence zero.  Thus we will let our replacement of this term be zero.
+    \item $\chi_{p_1p_2}(\sigma)\chi_{q_1q_2}(\sigma)\sum_{x\in C_{\set{1,2}}}\psi_x(\bw)(\tau)$.  The sum is just literally $\chi_{r_1}+\chi_{r_2}$, and so we can exactly replace with $\chi_{p_1p_2}(\sigma)\chi_{q_1q_2}(\sigma)\chi_{r_1r_2}(\tau)$.
+    \item Thinking like before, we now get the sum being $\chi_{r_2}+\chi_{r_2}$ and so we get zero.
+    \item Again we get $\chi_{r_2}+\chi_{r_2}$ for the sum which is now zero.
+\end{enumerate}
+
+Hence we want to find $\phi:G_\QQ\to \FF_2$ which satisfies
+\begin{align*}
+d\phi(\sigma,\tau)
+&=\chi_{p_1p_2}(\sigma)\phi_{q_1q_2,r_1r_2}^\nr(\tau)
++\chi_{q_1q_2}(\sigma)\phi_{p_1p_2,r_1r_2}^\nr(\tau)
++\chi_{p_1p_2}(\sigma)\chi_{q_1q_2}(\sigma)\chi_{r_1r_2}(\tau)
+\end{align*}
+Good properties of $\phi$ (see Higher Genus Theory, Koymans--Pagano) are
+\begin{itemize}
+    \item $\phi|_{G_{\QQ(\sqrt{p_1p_2},\sqrt{q_1q_2})}}$ is a quadratic character
+    \item The Galois group (smallest extension through which it factors) is $\FF_2[\FF_2^2]\rtimes \FF_2^2$.
+    \item We can choose $\phi=\phi_{p_1p_2,q_1q_2,r_1r_2}^\nr\in \Cl_{\QQ(\sqrt{p_1p_2},\sqrt{q_1q_2},\sqrt{r_1r_2})}^\vee[2]$. 
+\end{itemize}
+This leads to the goal: that 
+\[\prod_{x\in C}\widetilde{\Art_{x,3}}(\bv,\bw)=(-1)^{\sum_{i}v_i\phi_{p_1p_2,q_1q_2,r_1r_2}(\Frob_{\pi_i(x)})}\]
 % \bibliography{refs}
 \end{document}
