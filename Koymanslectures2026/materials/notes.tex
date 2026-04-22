@@ -707,11 +707,11 @@ Where, as usual, $K=\QQ(\sqrt{-x})$.  Again, it is not hard to see that $4\Cl_K[
 % Let us work out a construction of the pairing.  By definition, $\widetilde{\Art_{x,2}}(\bv,\bw)$ is constructed by choosing an element $f_{x,\bw}\in \Cl_K^\vee[4]$ such that $2f_{x,\bw}=\psi_x(\bw)$ and then from this we have $\widetilde{\Art_{x,2}}(\bv,\bw)=f_{x,\bw}(\psi_x(\bv))$.  Via \Cref{thm:L1thm1} we can lift this choice of $f_{x,\bw}$ back to an element of $Z^1(\Gal(H_K/\QQ),N(-x)[4])$ which restricts to $f_{x,\bw}$ and then further via \Cref{def:Z1nr} we inflate to an element $\psi_{x,\bw}^4\in Z^1_{\nr}(G_\QQ, N(-x)[4])$.  In particular, $\psi_{x,\bw}^4$ is well defined on $\Gal(H_K/\QQ)$ and when restricted to $\Gal(H_K/K)\cong \Cl_K$ we have $2\psi_{x,\bw}^4=\psi_{x}(\bw)$.
 
 We want to reduce proving such a statement to understanding some kind of character sum as before.  Let $\bv_1,\dots,\bv_t$ and $\bw_1,\dots,\bw_t$ be bases for $V$ and $W$ respectively.  Then the matrix which defines $\widetilde{\Art_{x,2}}$ is $t\times t$ with entries $\widetilde{\Art_{x,2}}(\bv_i,\bw_j)$ as we saw before with the R\'edei matrix.  We want to see that this matrix takes any value with equal probability, how should we do this?  Firstly, we want to know that each entry of this matrix can be $\pm 1$ with equal probability.  Hence, for a fixed pair $\bv_i,\bw_j$, this would be equivalent to showing that
-\[\abs{\sum_{x\in Y}\widetilde{\Art_{x,2}}(\bv_i,\bw_j)}=o(\#Y)=o(H),\]
+\[\abs{\sum_{x\in Y}\widetilde{\Art_{x,2}}(\bv_i,\bw_j)}=o(\#Y),\]
 since a saving is equivalent to the densities of $+1$ and $-1$ have the same leading term.  Then we need to check that there isn't some relation between pairs.  For example, perhaps two entries always have to be the same.  I this case, it's perfectly reasonable for one (and so both) of them to be $\pm 1$ with equal probability but the matrix will still not equidistribute.  To avoid such a correlation the values of the pairing on two pairs $(\bv_i,\bw_j)$ and $(\bv_k,\bw_\ell)$, we must similarly show that 
-\[\abs{\sum_{x\in Y}\widetilde{\Art_{x,2}}(\bv_{i},\bw_j)\widetilde{\Art_{x,2}}(\bv_k,\bw_{\ell})}=o(H).\]
+\[\abs{\sum_{x\in Y}\widetilde{\Art_{x,2}}(\bv_{i},\bw_j)\widetilde{\Art_{x,2}}(\bv_k,\bw_{\ell})}=o(\#Y).\]
 Continuing along this chain of reasoning (triple correlations and so on), we must show that for every choice of $\eta:[t]\times[t]\to \set{0,1}$except for the constant zero function, we get 
-\[\abs{\sum_{x\in Y}\prod_{i=1}^t\prod_{j=1}^t\widetilde{\Art_{x,2}}(\bv_{i},\bw_j)^{\eta(i,j)}}=o(H).\]
+\[\abs{\sum_{x\in Y}\prod_{i=1}^t\prod_{j=1}^t\widetilde{\Art_{x,2}}(\bv_{i},\bw_j)^{\eta(i,j)}}=o(\#Y).\]
 Over the next few lectures we'll work out the details of a special case of this sketch, which illustrates the key points.
 }
 
@@ -850,14 +850,23 @@ Define $E=\QQ(\sqrt{p_1p_2},\sqrt{q_1q_2})$.  Note that $\ker(d)=\Hom(G_\QQ,\FF_
 In fact, we may choose $\phi_{p_1p_2,q_1q_2}$ to be unramified over $E$  Indeed, let $\sigma_p$ denote a generator of tame inertia at an odd prime $p$, and write $e_p=\operatorname{ord}(\psi(\sigma_p))$ (which turns out to be the ramification degree of $p$ in $\bar{\QQ}^{\ker(\psi)}/E$).  Then away from $p_1p_2q_1q_2$ we can twist to ensure that $\psi(\sigma_p)=(*,0,0)$.  If $*=0$ then we get $\psi(\sigma_p)=0$ so $p$ is unramified, else if $*=1$ then we add $\chi_{p^*}$.
 
 We now write $\phi_{p_1p_2,q_1q_2}^\nr$ for our choice of cochain which is unramified over $E$.
-\begin{theorem}
+\begin{theorem}\label{thm:cubesum}
     Let $p_1,p_2\in X_1$, $q_1,q_2\in X_2$, $r\in X_3$.  Assume that $p_iq_jr\in Y$.  Then setting $C:=\set{p_1,p_2}\times \set{q_1,q_2}\times \set{r}$, and making any choice of $\phi_{p_1p_2q_1q_2}^\nr$ we obtain that
-    \[\prod_{x\in C}\widetilde{\Art_{x,2}}(\bv,\bw)=(-1)^{\phi_{p_1p_2,q_1q_2}^\nr(\Frob_\fr)}\]
+    \[\prod_{x\in C}\widetilde{\Art_{x,2}}(\bv,\bw)=(-1)^{\phi_{p_1p_2,q_1q_2}^\nr(\Frob_\fr)},\]
+    where $\Frob_\fr$ is the genuine from $\QQ$ in an unramified extension.
 \end{theorem}
 
 In particular, going back to \Cref{lem:repeatedCS}, we are now able to bound
 \[\sum_{x\in Y}\widetilde{\Art_{x,2}}(\bv,\bw)\leq \abs{X}^{3/4}\abs{\sum_{\substack{p_1,p_2\in X_1\\q_1,q_2\in X_2\\r_1,r_2\in X_3}}(-1)^{\phi_{p_1p_2,q_1q_2}^\nr(\Frob_{\fr_1})+\phi_{p_1p_2,q_1q_2}^\nr(\Frob_{\fr_2})}}^{1/8}\]
-which which will be a sum of a quadratic character over $\QQ(\sqrt{p_1p_2})$
+which which will be a sum of a quadratic character over $\QQ(\sqrt{p_1p_2})$.
+
+\lecture{}{Extra lecture}
+Continuing in our special case, we now want to prove \Cref{thm:cubesum}.
+
+\begin{proof}[Proof of \Cref{thm:cubesum}]
+    
+\end{proof}
+
 
 % \bibliography{refs}
 \end{document}
