@@ -1050,7 +1050,8 @@ and let
     The coboundary condition has already forced that $\phi_{a,b}(\textnormal{id})=0$, and by continuity of $\phi_{a,b}$ (i.e. only finitely many primes can ramify in a finite extension) we see that there are only finitely many $\sigma\in\fG$ such that $\phi_{a,b}(\sigma)=1$.  Hence we define our element to be the following finite sum
     \[\phi_{a,b}^\fG:=\phi_{a,b}+\sum_{p\textnormal{ odd}}\phi_{a,b}(\sigma_p)\chi_{p^*}+\phi_{a,b}(\sigma_{-1})\chi_{-1}+\phi_{a,b}(\sigma_{2})\chi_{2}.\]
 \end{proof}
-\begin{corollary} Assume that $(a,b_1)_v=(a,b_2)_v=+1$ and $(a_1,b)_v=(a_2,b)_v=+1$ for all places $v$, then 
+\begin{corollary}\label{cor:additivity}
+Assume that $(a,b_1)_v=(a,b_2)_v=+1$ and $(a_1,b)_v=(a_2,b)_v=+1$ for all places $v$, then 
     \begin{align*}
     \phi_{a,b_1b_2}^{\fG}&=\phi_{ab_1}^\fG+\phi_{ab_2}^{\fG},\\
     \phi_{a_1a_2,b}^{\fG}&=\phi_{a_1b}^\fG+\phi_{a_2b}^{\fG}.
@@ -1089,10 +1090,10 @@ Okay so now we return to our aim from the beginning of the last lecture.
 
     \textbf{Miracle:}  In fact if $R_{dp_iq_jr_k}=R$ for all $(i,j,k)\neq (2,2,2)$ then in fact the final one $R_{dp_1q_2r_2}=R$ for free!
 
-    \textbf{Final idea:}  Apply bonus repeated Cauchy--Schwarz on inner sum to bound it by
+    \textbf{Final idea:}  Apply bonus repeated Cauchy--Schwarz on the inner sum, applying additivity of our $\phi^{\fG}$ from \Cref{cor:additivity}, to bound it by
     \[\sum_{\substack{p_1\in X_{i_1}\\q_1\in X_{i_2}\\r_1\in X_{i_3}}}
     \sum_{\substack{p_2,p_3\in X_{i_1}\\q_2,q_3\in X_{i_2}\\r_2,r_3\in X_{i_3}}}(-1)^{\phi_{p_2p_3,q_2q_3}(\Frob_{r_2})+\phi_{p_2p_3,q_2q_3}(\Frob_{r_3})},\]
-    to which we can now apply the large sieve!
+    to which we can now apply the large sieve and get our saving!
 
 \end{proof}
 % \bibliography{refs}
