@@ -30,13 +30,15 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Compile LaTeX documents
-        uses: xu-cheng/latex-action@v4
+        if: steps.sources.outputs.files != ''
+        uses: xu-cheng/latex-action@v3
         with:
           root_file: ${{ steps.sources.outputs.files }}
           work_in_root_file_dir: true
           continue_on_error: true
 
       - name: Clean up auxiliary and tex files
+        if: steps.sources.outputs.files != ''
         run: |
           grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$' | while read -r f; do
             base="${f%.tex}"
