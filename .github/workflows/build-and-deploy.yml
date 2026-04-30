@@ -1,0 +1,72 @@
+name: Build LaTeX and Deploy to Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Find .tex files to compile
+        id: sources
+        run: |
+          FILES=$(grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$')
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Compile LaTeX documents
+        if: steps.sources.outputs.files != ''
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ${{ steps.sources.outputs.files }}
+          work_in_root_file_dir: true
+          continue_on_error: true
+
+      - name: Clean up auxiliary and tex files
+        if: steps.sources.outputs.files != ''
+        run: |
+          grep -v '^\s*#' .github/tex-sources.txt | grep -v '^\s*$' | while read -r f; do
+            base="${f%.tex}"
+            rm -f "$base.aux" \
+                  "$base.log" \
+                  "$base.out" \
+                  "$base.toc" \
+                  "$base.fls" \
+                  "$base.blg" \
+                  "$base.bbl" \
+                  "$base.brf" \
+                  "$base.fdb_latexmk" \
+                  "$base.synctex.gz" \
+                  "$base.tex"
+          done
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
